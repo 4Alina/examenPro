@@ -1,0 +1,45 @@
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/" class="logo" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" fill="#4A90E2" opacity="0.2"/>
+                <path d="M20 10L25 15L20 20L15 15L20 10Z" fill="#4A90E2"/>
+                <path d="M20 20L25 25L20 30L15 25L20 20Z" fill="#2E5C8A"/>
+            </svg>
+            <span style="color: var(--dark-blue); font-weight: 700; font-size: 1.2rem;">ЕкзаменПро</span>
+        </a>
+
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="/" class="nav-link">Головна</a></li>
+            <li><a href="/tests" class="nav-link">Тести</a></li>
+
+            <% if (locals.user) { %>
+                <% if (user.role === 'student') { %>
+                    <li><a href="/cabinet" class="nav-link">Мій кабінет</a></li>
+                <% } %>
+
+                <% if (user.role === 'teacher') { %>
+                    <li><a href="/teacher" class="nav-link">Панель викладача</a></li>
+                <% } %>
+            <% } %>
+        </ul>
+
+        <div class="nav-auth" id="authBlock">
+            <% if (locals.user) { %>
+                <span class="user-greeting" style="margin-right: 15px; font-weight: 500; color: var(--primary-blue);">
+                    <%= user.name %>
+                </span>
+                <a href="/api/auth/logout" class="btn-outline" style="text-decoration: none;">Вийти</a>
+            <% } else { %>
+                <a href="/login" class="btn-outline" style="text-decoration: none; margin-right: 10px;">Увійти</a>
+                <a href="/register" class="btn-primary" style="text-decoration: none;">Реєстрація</a>
+            <% } %>
+        </div>
+
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>

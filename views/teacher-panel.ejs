@@ -1,0 +1,167 @@
+<%- include('partials/head') %>
+
+    <body class="bg-light">
+        <%- include('partials/navbar') %>
+
+            <div class="cabinet-hero">
+                <div class="container">
+                    <div class="welcome-card">
+                        <div class="welcome-content">
+                            <h1>Панель викладача</h1>
+                            <p>Керуйте своїми тестами та відстежуйте успішність студентів.</p>
+                            <div class="user-info" style="margin-top: 15px;">
+                                <span class="user-name" id="userName"> <%= user.name %></span>
+                                <span class="user-badge teacher">Викладач</span>
+                            </div>
+                        </div>
+                        <div class="hero-actions" style="display: flex; gap: 10px; align-items: center;">
+                            <button class="btn-primary" onclick="openTestEditor()">+ Створити новий тест</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="container cabinet-main">
+<section class="tests-management">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Мої тести</h2>
+                <div class="management-filters">
+                    <input type="search" class="search-input" placeholder="Пошук тесту..." id="searchTests">
+                    <select class="filter-select" id="filterSubject">
+                        <option value="all">Всі предмети</option>
+                        <option value="Математика">Математика</option>
+                        <option value="Фізика">Фізика</option>
+                        <option value="Хімія">Хімія</option>
+                        <option value="Біологія">Біологія</option>
+                        <option value="Історія України">Історія України</option>
+                        <option value="Українська мова">Українська мова</option>
+                        <option value="Англійська мова">Англійська мова</option>
+                    </select>
+                    <select class="filter-select" id="filterStatus">
+                        <option value="all">Всі статуси</option>
+                        <option value="active">Активні</option>
+                        <option value="draft">Чернетки</option>
+                        <option value="archived">Архівовані</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tests-table-container">
+                <table class="tests-table">
+                    <thead>
+                        <tr>
+                            <th>Назва тесту</th>
+                            <th>Предмет</th>
+                            <th>Питань</th>
+                            <th>Складність</th>
+                            <th>Час</th>
+                            <th>Статус</th>
+                            <th>Пройдено разів</th>
+                            <th>Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody id="testsTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Завантаження тестів...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+                <section class="panel-section students-results">
+                    <div class="section-card">
+                        <h3>Останні результати студентів</h3>
+                        <div class="table-responsive">
+                            <table class="results-table">
+                                <thead>
+                                    <tr>
+                                        <th>Студент</th>
+                                        <th>Тест</th>
+                                        <th>Бал</th>
+                                        <th>Час проходження</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentsResultsBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+           <div id="testEditorModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
+    <div class="modal-content" style="background: white; margin: 2% auto; padding: 0; width: 90%; max-width: 800px; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; box-shadow: var(--shadow-lg);">
+        
+        <div style="padding: 1.5rem 2rem; border-bottom: 1px solid #edf2f7; display: flex; justify-content: space-between; align-items: center; background: #f8fafc;">
+            <h3 style="margin: 0; color: var(--dark-blue); font-weight: 700;">🛠️ Конструктор тесту</h3>
+            <button type="button" onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8;">&times;</button>
+        </div>
+
+        <form id="testForm" style="overflow-y: auto; padding: 2rem; flex-grow: 1;">
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; background: #f1f5f9; padding: 1.5rem; border-radius: 12px;">
+                <div style="grid-column: span 2;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Назва тесту</label>
+                    <input id="testTitle" class="form-control" placeholder="Наприклад: Основи тригонометрії" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                </div>
+                <div style="grid-column: span 2;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Опис тесту (інструкції для студентів)</label>
+            <textarea id="testDescription" class="form-control" placeholder="Опишіть, про що цей тест або на що звернути увагу..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; min-height: 80px; resize: vertical;"></textarea>
+        </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Предмет</label>
+                    <select id="testSubject" class="form-select" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                        <option value="Математика">Математика</option>
+                        <option value="Фізика">Фізика</option>
+                        <option value="Хімія">Хімія</option>
+                        <option value="Історія України">Історія України</option>
+                        <option value="Українська мова">Українська мова</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Час (хвилини)</label>
+                    <input id="testTime" type="number" class="form-control" value="20" min="5" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                </div>
+
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Складність</label>
+                    <select id="testDifficulty" class="form-select" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                        <option value="easy">Легкий</option>
+                        <option value="medium" selected>Середній</option>
+                        <option value="hard">Складний</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 2rem 0;">
+
+            <div id="questionsContainer">
+                </div>
+
+            <button type="button" onclick="addQuestionField()" class="btn-outline" style="width: 100%; padding: 12px; border-style: dashed; border-width: 2px; margin-top: 1rem;">
+                + Додати нове питання
+            </button>
+        </form>
+
+        <div style="padding: 1.5rem 2rem; border-top: 1px solid #edf2f7; background: white; display: flex; justify-content: flex-end; gap: 1rem;">
+            <button type="button" onclick="closeModal()" class="btn-outline" style="min-width: 120px;">Скасувати</button>
+            <button type="submit" form="testForm" class="btn-primary" style="min-width: 150px;">Зберегти тест</button>
+        </div>
+
+    </div>
+</div>
+
+            
+
+            <%- include('partials/footer') %>
+
+            <script>
+                const TEACHER_ID = <%= user.id %>;
+            </script>
+
+            <script src="/js/teacher-panel.js"></script>

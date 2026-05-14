@@ -1,0 +1,102 @@
+<%- include('partials/head') %>
+
+<body class="bg-light">
+    <%- include('partials/navbar') %>
+
+    <div class="cabinet-hero">
+        <div class="container">
+            <div class="welcome-card">
+                <div class="welcome-content">
+                    <h1>Вітаємо, <span id="studentName"><%= user.name %></span>! 👋</h1>
+                    <p>Твій поточний прогрес вражає. Продовжуй в тому ж дусі!</p>
+                    <div class="user-stats-mini">
+                        <div class="mini-stat">
+                            <span class="label">Завершено тестів:</span>
+                            <span class="value" id="totalTests">0</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="label">Середній бал:</span>
+                            <span class="value" id="avgScore">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="welcome-badge">
+                    <div class="achievement-icon">🏆</div>
+                    <p id="achievementLevel">Початківець</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container" style="margin-top: -2rem; padding-bottom: 5rem;">
+        
+        <div class="cabinet-grid welcome-card" style="margin-bottom: 3rem; display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; padding: 2rem;">
+            <div class="progress-content">
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--dark-blue);">Динаміка результатів</h3>
+                    <div style="height: 300px; position: relative;">
+                        <canvas id="progressChart" width="800" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="weak-topics">
+                <h3 style="margin-bottom: 1.5rem; color: var(--dark-blue);">Теми для покращення</h3>
+                <div class="topic-list" id="weakTopics">
+                    <p class="empty-state">Проходьте тести для аналізу тем</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="subjects-section" style="margin-bottom: 3rem;">
+            <h2 style="text-align: center; color: var(--dark-blue); margin-bottom: 2rem; font-weight: 700;">Прогрес по предметах</h2>
+            <div id="subjectsGrid" class="subjects-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+                </div>
+        </section>
+
+        <section class="history-section" style="background: white; padding: 2rem; border-radius: 15px; box-shadow: var(--shadow-sm); border: 1px solid #edf2f7;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 style="color: var(--dark-blue); margin: 0; font-weight: 700;">Історія тестувань</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <select id="filterSubject" class="form-select" style="padding: 8px 15px; border-radius: 8px; border: 1px solid #ddd;">
+                        <option value="all">Всі предмети</option>
+                    </select>
+                    <select id="filterTime" class="form-select" style="padding: 8px 15px; border-radius: 8px; border: 1px solid #ddd;">
+                        <option value="all">За весь час</option>
+                        <option value="week">Цей тиждень</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-responsive" style="overflow-x: auto;">
+                <table class="history-table" style="width: 100%; border-collapse: collapse; min-width: 800px;">
+                    <thead>
+                        <tr style="background: #F8FAFC; color: #64748B; text-align: left; border-bottom: 2px solid #edf2f7;">
+                            <th style="padding: 1.2rem;">Дата</th>
+                            <th style="padding: 1.2rem;">Предмет</th>
+                            <th style="padding: 1.2rem;">Назва тесту</th>
+                            <th style="padding: 1.2rem; text-align: center;">Результат</th>
+                            <th style="padding: 1.2rem; text-align: center;">Час</th>
+                            <th style="padding: 1.2rem; text-align: center;">Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        </tbody>
+                </table>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <button class="btn-text" style="color: var(--primary-blue); font-weight: 600; cursor: pointer; border: none; background: none;">
+                    Переглянути всю історію
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <%- include('partials/footer') %>
+    <script>
+        const STUDENT_ID = <%= user.id %>;
+    </script>
+
+    <script src="/js/student-cabinet.js"></script>
+

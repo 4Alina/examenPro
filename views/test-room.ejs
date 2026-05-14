@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестування - ЕкзаменПро</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Спеціальні стилі для кімнати тестування */
+        body { background-color: var(--bg-light); }
+        .test-container { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .test-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            background: var(--bg-white);
+            padding: 20px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+        .timer { font-size: 1.5rem; font-weight: 700; color: var(--secondary-blue); }
+        .question-card {
+            background: var(--bg-white);
+            padding: 30px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 20px;
+        }
+        .option-item {
+            margin: 10px 0;
+            padding: 15px;
+            border: 2px solid var(--border-light);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .option-item:hover { border-color: var(--primary-blue); background: var(--light-blue); }
+        .option-item.selected { border-color: var(--primary-blue); background: var(--primary-blue); color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="test-container">
+        <div class="test-header">
+            <div>
+                <h2 id="testTitle">Завантаження...</h2>
+                <span id="questionCounter">Питання 1 з ...</span>
+            </div>
+            <div class="timer" id="timer">00:00</div>
+        </div>
+
+        <div id="questionContainer">
+            <div class="question-card">
+                <h3 id="questionText">Підготовка питань...</h3>
+                <div id="optionsList">
+                    </div>
+            </div>
+        </div>
+
+        <div class="test-navigation" style="display: flex; justify-content: space-between;">
+            <button class="btn-outline" id="prevBtn" disabled>Назад</button>
+            <button class="btn-primary" id="nextBtn">Далі</button>
+            <button class="btn-primary" id="submitBtn" style="display: none; background: #27ae60;">Завершити тест</button>
+        </div>
+    </div>
+
+    <script>
+    const TEST_ID = <%= testId %>;
+    const STUDENT_ID = <%= user ? user.id : 'null' %>; // Передаємо ID, якщо юзер авторизований
+</script>
+    <script src="/js/test-logic.js"></script>
+</body>
+</html>

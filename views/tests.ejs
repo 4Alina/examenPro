@@ -1,0 +1,43 @@
+<%- include('partials/head') %>
+
+    <body>
+        <%- include('partials/navbar') %>
+
+            <main>
+                <section class="tests-section" id="tests">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">Доступні тестування</h2>
+                                        <div class="filters">
+                                            <select class="filter-select" id="subjectFilter">
+                                                <option value="all">Всі предмети</option>
+                                                <option value="Математика">Математика</option>
+                                                <option value="Фізика">Фізика</option>
+                                                <option value="Хімія">Хімія</option>
+                                                <option value="Біологія">Біологія</option>
+                                                <option value="Історія України">Історія України</option>
+                                                <option value="Українська мова">Українська мова</option>
+                                                <option value="Англійська мова">Англійська мова</option>
+                                            </select>
+                                            
+                                            <select class="filter-select" id="difficultyFilter">
+                                                <option value="all">Всі рівні</option>
+                                                <option value="easy">Легкий</option>
+                                                <option value="medium">Середній</option>
+                                                <option value="hard">Складний</option>
+                                            </select>
+
+                                            <input type="search" class="search-input" placeholder="Пошук тесту..." id="searchInput">
+                                        </div>
+                        </div>
+
+                        <div class="tests-grid" id="testsGrid">
+                            <div class="loading">Завантаження тестів...</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <script src="/js/script.js"></script>
+
+    </body>
